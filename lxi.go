@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"time"
 )
 
 // Device models an LXI device, which is currently just a TCPIP socket
@@ -40,7 +41,13 @@ func (d *Device) Write(p []byte) (n int, err error) {
 }
 
 // Read reads from the network connection into the given byte slice.
-func (d *Device) Read(p []byte) (n int, err error) {
+// timeout in milisecond
+func (d *Device) Read(p []byte, timeout int) (n int, err error) {
+	if timeout > 0 {
+		d.conn.SetReadDeadline(time.Now().Add(time.Millisecond * time.Duration(timeout)))
+	} else {
+		d.conn.SetReadDeadline(time.Time{})
+	}
 	return d.conn.Read(p)
 }
 
@@ -68,10 +75,16 @@ func (d *Device) Command(format string, a ...interface{}) error {
 // Query writes the given string to the underlying network connection and
 // returns a string. A newline character is automatically added to the query
 // command sent to the instrument.
-func (d *Device) Query(cmd string) (string, error) {
+// timeout in milisecond
+func (d *Device) Query(cmd string, timeout int) (string, error) {
 	err := d.Command(cmd)
 	if err != nil {
 		return "", err
+	}
+	if timeout > 0 {
+		d.conn.SetReadDeadline(time.Now().Add(time.Millisecond * time.Duration(timeout)))
+	} else {
+		d.conn.SetReadDeadline(time.Time{})
 	}
 	return bufio.NewReader(d.conn).ReadString('\n')
 }
