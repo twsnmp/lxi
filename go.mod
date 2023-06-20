@@ -1,3 +1,3 @@
-module github.com/gotmc/lxi
+module github.com/twsnmp/lxi
 
-go 1.13
+go 1.20

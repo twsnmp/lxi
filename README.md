@@ -15,15 +15,15 @@ equipment (e.g., oscilloscopes, DMMs, etc.) over Ethernet.
 ## Installation
 
 ```bash
-$ go get github.com/gotmc/lxi
+$ go get github.com/twsnmp/lxi
 ```
 
 ## Documentation
 
 Documentation can be found at either:
 
-- <https://godoc.org/github.com/gotmc/lxi>
-- <http://localhost:6060/pkg/github.com/gotmc/lxi/> after running `$
+- <https://godoc.org/github.com/twsnmp/lxi>
+- <http://localhost:6060/pkg/github.com/twsnmp/lxi/> after running `$
   godoc -http=:6060`
 
 ## Contributing
@@ -68,12 +68,12 @@ $ go tool cover -html coverage.out
 [LICENSE.txt][] file for more information.
 
 [GitHub Flow]: http://scottchacon.com/2011/08/31/github-flow.html
-[godoc badge]: https://godoc.org/github.com/gotmc/lxi?status.svg
-[godoc link]: https://godoc.org/github.com/gotmc/lxi
-[LICENSE.txt]: https://github.com/gotmc/lxi/blob/master/LICENSE.txt
+[godoc badge]: https://godoc.org/github.com/twsnmp/lxi?status.svg
+[godoc link]: https://godoc.org/github.com/twsnmp/lxi
+[LICENSE.txt]: https://github.com/twsnmp/lxi/blob/master/LICENSE.txt
 [license badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[lxi]: https://github.com/gotmc/lxi
+[lxi]: https://github.com/twsnmp/lxi
 [pull request]: https://help.github.com/articles/using-pull-requests
-[report badge]: https://goreportcard.com/badge/github.com/gotmc/lxi
-[report card]: https://goreportcard.com/report/github.com/gotmc/lxi
+[report badge]: https://goreportcard.com/badge/github.com/twsnmp/lxi
+[report card]: https://goreportcard.com/report/github.com/twsnmp/lxi
 [Scott Chacon]: http://scottchacon.com/about.html

@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2022 The lxi developers. All rights reserved.
-// Project site: https://github.com/gotmc/lxi
+// Project site: https://github.com/twsnmp/lxi
 // Use of this source code is governed by a MIT-style license that
 // can be found in the LICENSE.txt file for the project.
 
@@ -10,7 +10,7 @@ import (
 	"io"
 	"log"
 
-	"github.com/gotmc/lxi"
+	"github.com/twsnmp/lxi"
 )
 
 func main() {
