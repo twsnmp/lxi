@@ -15,7 +15,7 @@ import (
 
 func main() {
 
-	fg, err := lxi.NewDevice("TCPIP0::10.12.112.7::5025::SOCKET")
+	fg, err := lxi.NewDevice("TCPIP0::10.12.112.7::5025::SOCKET", 0)
 	if err != nil {
 		log.Fatalf("NewDevice error: %s", err)
 	}
@@ -45,7 +45,7 @@ func queryRange(fg *lxi.Device, r []string) {
 	for _, q := range r {
 		ws := fmt.Sprintf("%s?", q)
 		log.Printf("Querying %s", ws)
-		s, err := fg.Query(ws, 0)
+		s, err := fg.Query(ws)
 		log.Printf("Completed %s query", ws)
 		if err != nil {
 			log.Printf("Error reading: %v", err)

@@ -16,11 +16,13 @@ import (
 // Device models an LXI device, which is currently just a TCPIP socket
 // interface. An LXI Device also implements the ivi.Driver interface.
 type Device struct {
-	conn net.Conn
+	conn    net.Conn
+	timeout int
 }
 
 // NewDevice opens a TCPIP Device using the given VISA address resource string.
-func NewDevice(address string) (*Device, error) {
+// timeout in milisecond.
+func NewDevice(address string, timeout int) (*Device, error) {
 	var d Device
 	v, err := NewVisaResource(address)
 	if err != nil {
@@ -32,6 +34,7 @@ func NewDevice(address string) (*Device, error) {
 		return &d, err
 	}
 	d.conn = c
+	d.timeout = timeout
 	return &d, nil
 }
 
@@ -41,10 +44,9 @@ func (d *Device) Write(p []byte) (n int, err error) {
 }
 
 // Read reads from the network connection into the given byte slice.
-// timeout in milisecond
-func (d *Device) Read(p []byte, timeout int) (n int, err error) {
-	if timeout > 0 {
-		d.conn.SetReadDeadline(time.Now().Add(time.Millisecond * time.Duration(timeout)))
+func (d *Device) Read(p []byte) (n int, err error) {
+	if d.timeout > 0 {
+		d.conn.SetReadDeadline(time.Now().Add(time.Millisecond * time.Duration(d.timeout)))
 	} else {
 		d.conn.SetReadDeadline(time.Time{})
 	}
@@ -75,16 +77,21 @@ func (d *Device) Command(format string, a ...interface{}) error {
 // Query writes the given string to the underlying network connection and
 // returns a string. A newline character is automatically added to the query
 // command sent to the instrument.
-// timeout in milisecond
-func (d *Device) Query(cmd string, timeout int) (string, error) {
-	err := d.Command(cmd)
-	if err != nil {
-		return "", err
+func (d *Device) Query(cmd string) (string, error) {
+	if cmd != "" {
+		if err := d.Command(cmd); err != nil {
+			return "", err
+		}
 	}
-	if timeout > 0 {
-		d.conn.SetReadDeadline(time.Now().Add(time.Millisecond * time.Duration(timeout)))
+	if d.timeout > 0 {
+		d.conn.SetReadDeadline(time.Now().Add(time.Millisecond * time.Duration(d.timeout)))
 	} else {
 		d.conn.SetReadDeadline(time.Time{})
 	}
 	return bufio.NewReader(d.conn).ReadString('\n')
+}
+
+// SetTimeout set timeout in milisecond.
+func (d *Device) SetTimeout(timeout int) {
+	d.timeout = timeout
 }
